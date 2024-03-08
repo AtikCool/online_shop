@@ -1,0 +1,91 @@
+{% extends 'layout.html' %}
+{% block title %} Basket {% endblock %}
+{% block con %}
+
+{% if products %}
+
+<div class="bg-gray-100 h-screen py-8">
+    <div class="container mx-auto px-4">
+        <h1 class="text-2xl font-semibold mb-4">Shopping Cart</h1>
+        <div class="flex flex-col md:flex-row gap-4">
+            <div class="md:w-3/4">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-4">
+                    <table class="w-full">
+                        <thead>
+                            <tr>
+                                <th class="text-left font-semibold">Product</th>
+                                <th class="text-left font-semibold">Price</th>
+                                <th class="text-left font-semibold">Quantity</th>
+                                <th class="text-left font-semibold">Total</th>
+
+                            </tr>
+                        </thead>
+                        {% for el, value in products  %}
+
+                        <tbody>
+                            <tr>
+                                <td class="py-4">
+                                    <div class="flex items-center">
+                                        <img class="h-16 w-16 mr-4" src="{{ value.image.url }}" alt="Product image">
+                                        <span class="font-semibold">{{ value.name }}</span>
+                                    </div>
+                                </td>
+                                <td class="py-4">{{ value.price }}</td>
+                                <td class="py-4">
+                                    <div class="flex items-center">
+                                        <div class="col-lg-4">
+                                <input name="basketID" type="number" class="form-control"
+                                       value='{{ el }}' min="0">
+                            </div>
+                                    </div>
+                                    <a href="{% url  'main:basket_remove' value.id %}"><button class="bg-blue-500 text-white py-2 px-2 rounded-lg mt-4 w-20">Delete</button></a>
+                                </td>
+                                <td class="py-4">{% widthratio el 1 value.price %}.0000</td>
+
+                            </tr>
+
+                            <!-- More product rows -->
+                        </tbody>
+                    {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <div class="md:w-1/4">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-lg font-semibold mb-4">Summary</h2>
+                    <div class="flex justify-between mb-2">
+                        <span>Subtotal</span>
+                        <span>{{ total_sum }}</span>
+                    </div>
+
+                    <div class="flex justify-between mb-2">
+                        <span>Total Quantity</span>
+                        <span>{{ total_quantity }}</span>
+                    </div>
+                    <hr class="my-2">
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">Total</span>
+                        <span class="font-semibold">{{ total_sum }}</span>
+                    </div>
+                    <button class="bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 w-full">Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<section class="text-gray-600 body-font">
+  <div class="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
+
+    <div class="text-center lg:w-2/3 w-full">
+      <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Корзина Пуста</h1>
+      <p class="mb-8 leading-relaxed">Вы еще не добавили товары в корзину</p>
+      <div class="flex justify-center">
+        <a href="{% url 'main:menu' %}"> <button class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Перейти к покупке</button> </a>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock%}

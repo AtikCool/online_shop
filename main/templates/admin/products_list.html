@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+{% block title %}
+Products list.Admin Page
+{% endblock %}
+{% block con %}
+<!-- component -->
+<section class="text-gray-600 body-font">
+  <div class="container px-5 py-24 mx-auto">
+    <div class="flex flex-wrap -m-4">
+      {% for el in product %}
+
+
+      <div class="p-4 md:w-1/3">
+        <div class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
+          <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="{{ el.image.url }}" alt="blog">
+          <div class="p-6">
+            <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1"></h2>
+            <h1 class="title-font text-lg font-medium text-gray-900 mb-3">{{ el.name }}</h1>
+            <p class="leading-relaxed mb-3">{{ el.anons }}</p>
+            <div class="flex items-center flex-wrap ">
+              <a href="{% url 'moder:product_update' el.id %}"> <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+  Detail
+</button>
+
+              </a>
+                 <a href="{% url 'main:basket_add' el.id %}"> <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+  Delete
+</button>
+
+              </a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+  {% endfor %}
+   </div>
+  </div>
+</section>
+{% endblock%}

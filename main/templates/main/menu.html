@@ -1,0 +1,178 @@
+{% extends 'layout.html' %}
+{% block title %}
+Menu
+{% endblock title %}
+
+{% block con %}
+<!-- component -->
+
+
+
+
+<div class="w-2/12 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+    <a href="#" aria-current="true" class="block w-full px-4 py-2 text-white bg-blue-700 border-b border-gray-200 rounded-t-lg cursor-pointer dark:bg-gray-800 dark:border-gray-600">
+        Сategory
+    </a>
+    {% for el in category%}
+    <a href="{{ el.get_absolute_url }}" class="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+        {{ el.name }}
+    </a>
+    {% endfor %}
+
+
+</div>
+
+<!-- TW Elements is free under AGPL, with commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com -->
+<div class="w-3/12 ">
+<div class="max-w-2xl mx-auto">
+<form>
+	<label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Select an option</label>
+        <select  name="sort_method" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option selected>Выберите способ сортировки</option>
+        <option value="up">По возростанию цены</option>
+        <option value="down">По убыванию цены</option>
+
+    </select>
+
+
+
+    <div class="mb-3">
+<label for="max-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Max:<span id="max"></span>$</label>
+<input {% if query_data.max_price %} value="{{ query_data.max_price }}" {% endif %} id="max-range" name="max_price" min="{{ price_data.min_price }}" max="{{ price_data.max_price }}" type="range"  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+
+<label for="min-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Min:<span id="min">$</span></label>
+<input  id="min-range"  {% if query_data.min_price %} value="{{ query_data.min_price }}" {% endif %} name='min_price' min="{{ price_data.min_price }}" max="{{ price_data.max_price }}" type="range"  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+<script>
+  var slider = document.getElementById("min-range");
+  var output = document.getElementById("min");
+  output.innerHTML = slider.value; // Отображение начального значения слайдера
+
+  // Обновление значения слайдера при перемещении ползунка
+  slider.oninput = function() {
+    output.innerHTML = this.value;
+  }
+</script>
+
+<script>
+  var slider = document.getElementById("max-range");
+  var output = document.getElementById("max");
+  output.innerHTML = slider.value; // Отображение начального значения слайдера
+
+  // Обновление значения слайдера при перемещении ползунка
+  slider.oninput = function() {
+    output.innerHTML = this.value;
+  }
+</script>
+
+
+
+  <div class="relative mb-4 flex  flex-wrap items-stretch">
+    <input
+      {% if query_data.search_value %}
+      value="{{ query_data.search_value }}"
+      {% endif %}
+            name="search"
+      type="search"
+      class="relative m-0 -mr-0.5 block min-w-0 flex-auto rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
+      placeholder="Search"
+      aria-label="Search"
+      aria-describedby="button-addon1" />
+
+    <!--Search button-->
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+  Search
+</button>
+  </div>
+</div>
+    </div>
+    </form>
+
+
+</div>
+
+
+<!-- source: https://github.com/mfg888/Responsive-Tailwind-CSS-Grid/blob/main/index.html -->
+
+
+{% if product %}
+<!-- ✅ Grid Section - Starts Here 👇 -->
+<section id="Projects"
+    class="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
+{% for el in product %}
+    <!--   ✅ Product card 1 - Starts Here 👇 -->
+    <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+        <a href="#">
+            <img src="{{ el.image.url }}"
+                    alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
+            <div class="px-4 py-3 w-72">
+                <span class="text-gray-400 mr-3 uppercase text-xs">Brand</span>
+                <p class="text-lg font-bold text-black truncate block capitalize">{{ el.name }}</p>
+                <div class="flex items-center">
+                    <p class="text-lg font-semibold text-black cursor-auto my-3">{{ el.price }}$</p>
+                    <del>
+
+                    <a href="{% url 'main:basket_add' el.id %}"> <div class="ml-auto"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
+                            <path
+                                d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+                        </svg></div></a>
+                </div>
+            </div>
+        </a>
+    </div>
+
+{% endfor %}
+</section>
+
+
+<!-- Support Me 🙏🥰 -->
+<script src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
+<script>
+    kofiWidgetOverlay.draw('mohamedghulam', {
+            'type': 'floating-chat',
+            'floating-chat.donateButton.text': 'Support me',
+            'floating-chat.donateButton.background-color': '#323842',
+            'floating-chat.donateButton.text-color': '#fff'
+        });
+</script>
+<nav aria-label="Page navigation example">
+  <ul class=" justify-center inline-flex -space-x-px text-sm">
+    <li>
+      <a href="{% if product.has_previous %}{% url 'main:paginator' product.previous_page_number %}{% else%} # {% endif %}" class="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white {% if not product.has_previos %} disabled {% endif%}">Previous</a>
+    </li>
+    {% for page in product.paginator.page_range %}
+
+    <li>
+      <a href="{% url 'main:paginator' page %}" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white  {% if not product.has_previos %} disabled {% endif%}">{{ page}}</a>
+    </li>
+    {% endfor %}
+
+    <li>
+      <a href="{% if product.has_next %}{% url 'main:paginator' product.next_page_number %}{% else%} # {% endif %}" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white  {% if not product.has_previos %} disabled {% endif%}">Next</a>
+    </li>
+  </ul>
+</nav>
+
+{% else %}
+<section class="text-gray-600 body-font">
+  <div class="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
+
+    <div class="text-center lg:w-2/3 w-full">
+      <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Здесь пока что нет продуктов!</h1>
+
+      <div class="flex justify-center">
+        <a href="{% url 'main:main' %}"> <button class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Перейти на Главную страницу</button> </a>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 🛑 Grid Section - Ends Here -->
+
+
+
+{% endif %}
+{% endblock con %}

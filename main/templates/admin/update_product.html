@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+{% block title %}
+Update {{ product.name ]}
+{% endblock %}
+{% block con %}
+<form enctype="multipart/form-data" method="POST" action="{% url 'moder:product_update' product.id %}">
+
+
+     {% csrf_token %}
+    {{ form }}
+
+  <button type="submit" class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Button</button>
+
+
+
+
+</form>
+{% endblock %}
